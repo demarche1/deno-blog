@@ -1,11 +1,11 @@
-// deno-lint-ignore-file no-explicit-any
 import { generateJwt } from "../../../utils/jwt.ts";
-import storeValidate from "../../../validates/auth/storeValidate.ts";
+import storeValidator from "../../../validators/auth/storeValidator.ts";
+import createResponse from "../../../utils/createResponse.ts";
 
 class AuthController {
   async store(ctx: any) {
     try {
-      const user = await storeValidate(ctx);
+      const user = await storeValidator(ctx);
 
       const payload = {
         iss: String(user?.email),
@@ -16,26 +16,16 @@ class AuthController {
 
       ctx.cookies.set("jwt", jwt);
 
-      ctx.response.status = 200;
-      ctx.response.body = {
-        msg: "Success!",
-      };
+      createResponse(ctx, 200);
     } catch (error) {
-      console.error(error.message);
-      ctx.response.status = 400;
-      ctx.response.body = {
-        msg: error.message,
-      };
+      createResponse(ctx, 400, {}, error.message);
     }
   }
 
   destroy(ctx: any) {
     ctx.cookies.delete("jwt");
 
-    ctx.response.status = 200;
-    ctx.response.body = {
-      msg: "Success!",
-    };
+    createResponse(ctx, 200);
   }
 }
 

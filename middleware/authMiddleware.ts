@@ -1,16 +1,14 @@
 import { verify } from "../deps.ts";
 import { key } from "../utils/jwt.ts";
 import { User } from "../Models/index.ts";
+import createResponse from "../utils/createResponse.ts";
 
 export const authMiddleware = async (ctx: any, next: Function) => {
   try {
     const jwt = await ctx.cookies.get("jwt");
 
     if (!jwt) {
-      ctx.response.status = 401;
-      ctx.response.body = {
-        msg: "Unauthorized",
-      };
+      createResponse(ctx, 401, {}, "Unauthorized");
     }
 
     const data = await verify(jwt, key);
@@ -21,9 +19,6 @@ export const authMiddleware = async (ctx: any, next: Function) => {
       next();
     }
   } catch (_error) {
-    ctx.response.status = 400;
-    ctx.response.body = {
-      msg: "Unauthorized",
-    };
+    createResponse(ctx, 401, {}, "Unauthorized");
   }
 };
