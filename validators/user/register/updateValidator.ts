@@ -1,4 +1,4 @@
-import { isEmpty, isEmail } from "../../../deps.ts";
+import { isEmpty } from "../../../deps.ts";
 import { UserKeys } from "../../../Models/index.ts";
 
 const validate = async (ctx: any) => {
