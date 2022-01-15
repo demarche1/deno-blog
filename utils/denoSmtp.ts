@@ -1,12 +1,10 @@
 import { SmtpClient } from "../deps.ts";
 
-const client = new SmtpClient();
+export const client = new SmtpClient();
 
-await client.connect({
+export const connectConfig = {
   hostname: "smtp.mailtrap.io",
   port: 2525,
   username: "c780f7fe235a11",
   password: "8780deebad9ba3",
-});
-
-export default client;
+};

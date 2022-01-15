@@ -25,6 +25,8 @@ class AuthController {
   destroy(ctx: any) {
     ctx.cookies.delete("jwt");
 
+    ctx.state.user = null;
+
     createResponse(ctx, 200);
   }
 }

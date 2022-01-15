@@ -1,24 +1,21 @@
 import { User, UserKeys } from "../../../Models/index.ts";
-import storeValidator from "../../../validators/user/register/storeValidator.ts";
-import updateValidator from "../../../validators/user/register/updateValidator.ts";
-import verifyEmail from "../../../resources/emails/verify-email.ts";
+import storeValidator from "../../../validators/user/forgotPassword/storeValidator.ts";
+import updateValidator from "../../../validators/user/forgotPassword/updateValidator.ts";
+import renderForgotPasswordEmail from "../../../resources/emails/forgot-password.ts";
 import { connectConfig, client } from "../../../utils/denoSmtp.ts";
-import generateUUID from "../../../utils/uuid.ts";
 import createResponse from "../../../utils/createResponse.ts";
 import { hashSync } from "../../../deps.ts";
 
-class RegisterController {
+class ForgotPasswordController {
   async store(ctx: any) {
     try {
       const { email, redirectUrl } = await storeValidator(ctx);
 
-      const id = await generateUUID(email);
-
-      await User.create({ id, email });
+      const user = await User.where("email", email).first();
 
       const key = crypto.randomUUID() + new Date().getTime();
 
-      await UserKeys.create({ key, userId: id });
+      await UserKeys.create({ key, userId: String(user.id) });
 
       const link = `${redirectUrl.replace(/\/$/, "")}/${key}`;
 
@@ -27,8 +24,8 @@ class RegisterController {
       await client.send({
         from: "contato@denoblog.com",
         to: email,
-        subject: "Criação de conta",
-        content: verifyEmail({ link }),
+        subject: "Recuperação de senha",
+        content: renderForgotPasswordEmail({ link, name: String(user.name) }),
       });
 
       await client.close();
@@ -53,14 +50,12 @@ class RegisterController {
 
   async update(ctx: any) {
     try {
-      const { key, name, password } = await updateValidator(ctx);
+      const { key, password } = await updateValidator(ctx);
 
       const userKey = await UserKeys.where("key", key).first();
 
       const user = await User.find(String(userKey.userId));
 
-      user.name = name;
-      user.username = name.toLowerCase() + new Date().getTime();
       user.password = hashSync(password);
       await user.update();
 
@@ -73,4 +68,4 @@ class RegisterController {
   }
 }
 
-export default new RegisterController();
+export default new ForgotPasswordController();
