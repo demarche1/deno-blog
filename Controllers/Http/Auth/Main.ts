@@ -1,6 +1,8 @@
 import { generateJwt } from "../../../utils/jwt.ts";
 import storeValidator from "../../../validators/auth/storeValidator.ts";
+import jwtValidator from "../../../validators/auth/jwtValidator.ts";
 import createResponse from "../../../utils/createResponse.ts";
+import { ApiToken } from "../../../Models/index.ts";
 
 class AuthController {
   async store(ctx: any) {
@@ -14,7 +16,10 @@ class AuthController {
 
       const jwt = await generateJwt(payload);
 
-      ctx.cookies.set("jwt", jwt);
+      await ApiToken.create({
+        jwt,
+        userId: String(user.id),
+      });
 
       createResponse(ctx, 200);
     } catch (error) {
@@ -22,12 +27,18 @@ class AuthController {
     }
   }
 
-  destroy(ctx: any) {
-    ctx.cookies.delete("jwt");
+  async destroy(ctx: any) {
+    try {
+      const jwt = await jwtValidator(ctx);
 
-    ctx.state.user = null;
+      const apiToken = await ApiToken.where("jwt", String(jwt)).first();
 
-    createResponse(ctx, 200);
+      await apiToken.delete();
+
+      createResponse(ctx, 200);
+    } catch (error) {
+      createResponse(ctx, 404, {}, error.message);
+    }
   }
 }
 

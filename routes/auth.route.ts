@@ -1,6 +1,6 @@
 import { Router } from "../deps.ts";
 import AuthController from "../Controllers/Http/Auth/Main.ts";
-import { authMiddleware } from "../middleware/authMiddleware.ts";
+import authMiddleware from "../middleware/authMiddleware.ts";
 
 const router = new Router();
 

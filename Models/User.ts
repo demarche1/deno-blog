@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "../deps.ts";
 import UserKeys from "./UserKeys.ts";
+import ApiToken from "./ApiToken.ts";
 
 export default class User extends Model {
   static table = "users";
