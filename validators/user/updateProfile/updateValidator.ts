@@ -1,21 +1,24 @@
-import { isEmail } from "../../../deps.ts";
+import { validate, isString, nullable, isIn } from "../../../deps.ts";
+import { unique } from "../../../utils/unique.ts";
 
-const validate = async (ctx: any) => {
-  const updateData = await ctx.request.body().value;
+const validator = async (ctx: any) => {
+  const inputs = await ctx.request.body().value;
 
-  if (updateData.email) {
-    if (!isEmail(updateData.email, [])) {
-      throw new Error("Invalid email");
-    }
+  const [passes, errors] = await validate(inputs, {
+    name: [isString, nullable],
+    username: [isString, nullable, unique("username", inputs.username)],
+    email: [isString, nullable, unique("email", inputs.email)],
+    password: [isString, nullable, isIn(inputs.confirmedPassword)],
+    confirmedPassword: [isString, nullable, isIn(inputs.password)],
+  });
+
+  if (!passes) {
+    throw new Error(JSON.stringify(errors));
   }
 
-  if (updateData.password) {
-    if (updateData.password !== updateData.confirmedPassword) {
-      throw new Error("Passwords must be equals");
-    }
-  }
+  delete inputs.confirmedPassword;
 
-  return updateData;
+  return inputs;
 };
 
-export default validate;
+export default validator;

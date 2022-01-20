@@ -13,20 +13,18 @@ class UpdateController {
     try {
       const user = await User.where("id", ctx.state.user.id).first();
 
-      const updateData = await updateValidator(ctx);
+      const { name, username, email, password } = await updateValidator(ctx);
 
-      user.email = updateData.email ? updateData.email : user.email;
-      user.name = updateData.name ? updateData.name : user.name;
-      user.username = updateData.username ? updateData.username : user.username;
-      user.password = updateData.password
-        ? hashSync(updateData.password)
-        : user.password;
+      user.email = email ? email : user.email;
+      user.name = name ? name : user.name;
+      user.username = username ? username : user.username;
+      user.password = password ? hashSync(password) : user.password;
 
       await user.update();
 
       ctx.state.user = user;
 
-      createResponse(ctx, 200);
+      createResponse(ctx, 200, { user });
     } catch (error) {
       createResponse(ctx, 400, {}, error.message);
     }

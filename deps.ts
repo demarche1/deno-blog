@@ -35,4 +35,16 @@ export { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 //UUID
 export { v5 } from "https://deno.land/std@0.120.0/uuid/mod.ts";
 
-export { Schema } from "https://deno.land/x/valivar/mod.ts";
+//Validators
+export {
+  validate,
+  isString,
+  nullable,
+  isIn,
+  notIn,
+  invalid,
+} from "https://deno.land/x/validasaur@v0.15.0/mod.ts";
+export type {
+  Validity,
+  Rule,
+} from "https://deno.land/x/validasaur@v0.15.0/mod.ts";

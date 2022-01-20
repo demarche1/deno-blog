@@ -21,7 +21,7 @@ class AuthController {
         userId: String(user.id),
       });
 
-      createResponse(ctx, 200);
+      createResponse(ctx, 200, { jwt });
     } catch (error) {
       createResponse(ctx, 400, {}, error.message);
     }
