@@ -1,6 +1,6 @@
 import { generateJwt } from "../../../utils/jwt.ts";
 import storeValidator from "../../../validators/auth/storeValidator.ts";
-import jwtValidator from "../../../validators/auth/jwtValidator.ts";
+import jwtValidator from "../../../validators/jwt/jwtValidator.ts";
 import createResponse from "../../../utils/createResponse.ts";
 import { ApiToken } from "../../../Models/index.ts";
 

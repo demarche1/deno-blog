@@ -1,7 +1,7 @@
 import { isEmpty, isEmail } from "../../../deps.ts";
 import { User } from "../../../Models/index.ts";
 
-const validate = async (ctx: any) => {
+const storeValidator = async (ctx: any) => {
   const { email, redirectUrl } = await ctx.request.body().value;
 
   if (isEmpty(email, []) || isEmpty(redirectUrl, [])) {
@@ -21,4 +21,4 @@ const validate = async (ctx: any) => {
   return { email, redirectUrl };
 };
 
-export default validate;
+export default storeValidator;

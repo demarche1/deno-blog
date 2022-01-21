@@ -1,13 +1,13 @@
 export { Application, Router } from "https://deno.land/x/oak@v10.1.0/mod.ts";
 
-// JWT
+//djwt
 export {
   create,
   getNumericDate,
   verify,
 } from "https://deno.land/x/djwt@v2.4/mod.ts";
 
-//DB
+//DenoDB
 export {
   Database,
   MySQLConnector,
@@ -35,7 +35,7 @@ export { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 //UUID
 export { v5 } from "https://deno.land/std@0.120.0/uuid/mod.ts";
 
-//Validators
+//Validosaur
 export {
   validate,
   isString,

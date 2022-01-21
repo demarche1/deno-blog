@@ -1,7 +1,7 @@
 import { isEmpty, isJWT } from "../../deps.ts";
 import { ApiToken } from "../../Models/index.ts";
 
-const validate = async (ctx: any) => {
+const jwtValidator = async (ctx: any) => {
   const jwt = await ctx.request.headers.get("authorization");
 
   if (isEmpty(jwt, [])) {
@@ -21,4 +21,4 @@ const validate = async (ctx: any) => {
   return jwt;
 };
 
-export default validate;
+export default jwtValidator;

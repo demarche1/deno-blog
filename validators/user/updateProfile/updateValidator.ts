@@ -1,7 +1,7 @@
 import { validate, isString, nullable, isIn } from "../../../deps.ts";
 import { unique } from "../../../utils/unique.ts";
 
-const validator = async (ctx: any) => {
+const updateValidator = async (ctx: any) => {
   const inputs = await ctx.request.body().value;
 
   const [passes, errors] = await validate(inputs, {
@@ -21,4 +21,4 @@ const validator = async (ctx: any) => {
   return inputs;
 };
 
-export default validator;
+export default updateValidator;

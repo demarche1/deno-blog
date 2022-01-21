@@ -2,7 +2,7 @@ import { verify } from "../deps.ts";
 import { key } from "../utils/jwt.ts";
 import { User } from "../Models/index.ts";
 import createResponse from "../utils/createResponse.ts";
-import jwtValidator from "../validators/auth/jwtValidator.ts";
+import jwtValidator from "../validators/jwt/jwtValidator.ts";
 
 const authMiddleware = async (ctx: any, next: Function) => {
   try {

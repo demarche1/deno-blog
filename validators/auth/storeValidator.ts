@@ -1,7 +1,7 @@
 import { User } from "../../Models/index.ts";
 import { isEmail, isEmpty, compareSync } from "../../deps.ts";
 
-const validate = async (ctx: any) => {
+const storeValidator = async (ctx: any) => {
   const { email, password } = await ctx.request.body().value;
 
   if (isEmpty(email, []) || isEmpty(password, [])) {
@@ -25,4 +25,4 @@ const validate = async (ctx: any) => {
   return user;
 };
 
-export default validate;
+export default storeValidator;

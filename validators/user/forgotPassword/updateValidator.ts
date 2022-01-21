@@ -1,7 +1,7 @@
 import { isEmpty } from "../../../deps.ts";
 import { User, UserKeys } from "../../../Models/index.ts";
 
-const validate = async (ctx: any) => {
+const updateValidator = async (ctx: any) => {
   const { key, password, confirmedPassword } = await ctx.request.body().value;
 
   if (isEmpty(key, [])) {
@@ -27,4 +27,4 @@ const validate = async (ctx: any) => {
   return { key, password };
 };
 
-export default validate;
+export default updateValidator;
